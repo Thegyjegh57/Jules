@@ -1,0 +1,177 @@
+<html><head><base href="https://websim.live/name-generator/">
+<meta charset="UTF-8">
+<title>Magical Name Generator</title>
+<style>
+:root {
+  --primary: #6b4de6;
+  --secondary: #8f7def;
+  --background: #f5f3ff;
+  --text: #2d1b69;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--background);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+}
+
+h1 {
+  color: var(--primary);
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.generator-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+select, button {
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 2px solid var(--secondary);
+  font-size: 1rem;
+}
+
+button {
+  background: var(--primary);
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+button:hover {
+  transform: scale(1.02);
+}
+
+#result {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 8px;
+  background: var(--background);
+  min-height: 60px;
+}
+
+.name-history {
+  text-align: left;
+  margin-top: 2rem;
+}
+
+.history-item {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--secondary);
+}
+
+@keyframes sparkle {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.2) rotate(180deg); }
+  100% { transform: scale(1) rotate(360deg); }
+}
+
+.sparkle {
+  display: inline-block;
+  animation: sparkle 1s ease-in-out;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>✨ Jules Name Generator ✨</h1>
+  
+  <div class="generator-form">
+    <select id="nameType">
+      <option value="fantasy">Fantasy Name</option>
+      <option value="scifi">Sci-Fi Name</option>
+      <option value="medieval">Medieval Name</option>
+      <option value="mythological">Mythological Name</option>
+    </select>
+    
+    <select id="gender">
+      <option value="any">Any Gender</option>
+      <option value="masculine">Masculine</option>
+      <option value="feminine">Feminine</option>
+      <option value="neutral">Gender Neutral</option>
+    </select>
+    
+    <button onclick="generateName()">Generate Name</button>
+  </div>
+
+  <div id="result">Your magical name awaits...</div>
+  
+  <div class="name-history">
+    <h3>Previously Generated Names:</h3>
+    <div id="history"></div>
+  </div>
+</div>
+
+<script>
+const nameComponents = {
+  fantasy: {
+    prefixes: ['Aether', 'Cael', 'Drath', 'Elowen', 'Fae', 'Galen', 'Hyr', 'Iris', 'Kai', 'Luna'],
+    suffixes: ['thor', 'wen', 'wyn', 'mor', 'star', 'light', 'shade', 'soul', 'heart', 'spirit']
+  },
+  scifi: {
+    prefixes: ['Zex', 'Neo', 'Quantum', 'Cyber', 'Nova', 'Tech', 'Vex', 'Stellar', 'Flux', 'Ion'],
+    suffixes: ['tron', 'droid', 'bot', 'rix', 'core', 'wave', 'pulse', 'byte', 'flex', 'nexus']
+  },
+  medieval: {
+    prefixes: ['Alder', 'Black', 'Crow', 'Drake', 'Eagle', 'Frost', 'Grey', 'Heath', 'Iron', 'Knight'],
+    suffixes: ['smith', 'wood', 'fort', 'worth', 'guard', 'ward', 'helm', 'shield', 'sword', 'heart']
+  },
+  mythological: {
+    prefixes: ['Atlas', 'Chronos', 'Diana', 'Echo', 'Helios', 'Iris', 'Janus', 'Kyros', 'Lyra', 'Moros'],
+    suffixes: ['ios', 'ius', 'ix', 'os', 'us', 'is', 'eus', 'or', 'yr', 'on']
+  }
+};
+
+const generateName = () => {
+  const type = document.getElementById('nameType').value;
+  const gender = document.getElementById('gender').value;
+  
+  const prefix = nameComponents[type].prefixes[Math.floor(Math.random() * nameComponents[type].prefixes.length)];
+  const suffix = nameComponents[type].suffixes[Math.floor(Math.random() * nameComponents[type].suffixes.length)];
+  
+  const generatedName = prefix + suffix;
+  
+  const resultDiv = document.getElementById('result');
+  resultDiv.innerHTML = `<span class="sparkle">${generatedName}</span>`;
+  
+  addToHistory(generatedName, type);
+};
+
+const addToHistory = (name, type) => {
+  const history = document.getElementById('history');
+  const historyItem = document.createElement('div');
+  historyItem.className = 'history-item';
+  historyItem.textContent = `${name} (${type})`;
+  
+  if (history.children.length >= 5) {
+    history.removeChild(history.lastChild);
+  }
+  
+  history.insertBefore(historyItem, history.firstChild);
+};
+
+// Generate initial name on page load
+window.onload = generateName;
+</script>
+</body></html>
